@@ -22,7 +22,7 @@ app.add_middleware(
 @app.get("/")  # get: http method,
 def root():
     return {
-        "message": "Welcomoe to my api"
+        "message": "Welcomoe to my api!"
     }  # this python dict will automatically gets converted to JSON(main lang. of apis)
 
 
