@@ -1,7 +1,9 @@
 from os import access
-from pydantic import BaseModel, EmailStr, conint
+from pydantic import BaseModel, ConfigDict, EmailStr, conint
 from datetime import datetime
 from typing import Optional
+
+ConfigDict
 
 
 class PostBase(BaseModel):  # pydantic validation using BaseModel
@@ -19,8 +21,7 @@ class UserOut(BaseModel):
     email: EmailStr
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Post(PostBase):
@@ -29,16 +30,14 @@ class Post(PostBase):
     owner_id: int
     owner: UserOut
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PostOut(BaseModel):
     Post: Post
     vote: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserCreate(BaseModel):
@@ -51,8 +50,7 @@ class UserOut(BaseModel):
     email: EmailStr
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserLogin(BaseModel):
