@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from .config import settings
 
@@ -14,7 +14,7 @@ from .config import settings
 #             host="localhost",
 #             database="fastapi",
 #             user="postgres",
-#             password="rashi3110",
+#             password="password",
 #             cursor_factory=RealDictCursor,
 #         )
 #         cursor = conn.cursor()
