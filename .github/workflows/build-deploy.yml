@@ -7,7 +7,7 @@ jobs:
     environment:
       name: testing
     env:
-      DATABASE_HOSTNAME: localhost
+      DATABASE_HOSTNAME: ${{secrets.DATABASE_HOSTNAME}}
       DATABASE_PORT: ${{secrets.DATABASE_PORT}}
       DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       DATABASE_NAME: ${{secrets.DATABASE_NAME}}
@@ -15,11 +15,12 @@ jobs:
       SECRET_KEY: ${{secrets.SECRET_KEY}}
       ALGORITHM: ${{secrets.ALGORITHM}}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
-    
+
     services:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: ${{secrets.DATABASE_USERNAME}}
           POSTGRES_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
           POSTGRES_DB: ${{secrets.DATABASE_NAME}}_test
         ports:
@@ -38,23 +39,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.11"
-      - name: Install postgres client (to use pg_isready)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
       - name: update pip
         run: python3 -m pip install --upgrade pip
       - name: intall all dependencies
         run: pip install -r requirements.txt
-      - name: Wait for Postgres to be ready
-        run: |
-          for i in {1..30}; do
-            pg_isready -h ${{ env.DATABASE_HOSTNAME }} -p ${{ env.DATABASE_PORT }} -U ${{ env.DATABASE_USERNAME }} && break
-            echo "Waiting for postgres... ($i)"
-            sleep 1
-          done
-          echo "Postgres should be ready."
-
       - name: test with pytest
         run: |
           pip install pytest
